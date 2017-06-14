@@ -46,7 +46,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>sarsat1</value>
+      <value>apt_pds_1</value>
     </param>
     <param>
       <key>max_nouts</key>
@@ -79,6 +79,87 @@
     <param>
       <key>title</key>
       <value></value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(336, 144)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>apt_filename_0</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>"{:s}_APT_{:s}_{:s}k.fc32".format(sat_name, ts_str, str(int(samp_rate)/1000))</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1096, 76)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>apt_fn</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>"{:s}_APT_{:s}_{:s}k.fc32".format(sat_name, ts_str, str(int(samp_rate)/1000))</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1096, 140)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>apt_fp</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>"/mnt/usbhdd/{:s}".format(apt_fn)</value>
     </param>
   </block>
   <block>
@@ -175,7 +256,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(280, 12)</value>
+      <value>(176, 12)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -206,11 +287,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(176, 12)</value>
+      <value>(912, 76)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -218,11 +299,38 @@
     </param>
     <param>
       <key>id</key>
-      <value>samp_rate</value>
+      <value>sarsat_fn</value>
     </param>
     <param>
       <key>value</key>
-      <value>32000</value>
+      <value>"{:s}_SARSAT_{:s}_{:s}k.fc32".format(sat_name, ts_str, str(int(samp_rate)/1000))</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(912, 140)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>sarsat_fp</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>"/mnt/usbhdd/{:s}".format(sarsat_fn)</value>
     </param>
   </block>
   <block>
@@ -241,7 +349,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(280, 84)</value>
+      <value>(312, 12)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -280,7 +388,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(56, 92)</value>
+      <value>(312, 76)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -311,11 +419,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1000, 108)</value>
+      <value>(1008, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -323,38 +431,11 @@
     </param>
     <param>
       <key>id</key>
-      <value>timestamp</value>
+      <value>ts_str</value>
     </param>
     <param>
       <key>value</key>
-      <value>strftime("%Y-%m-%d_%H:%M:%SUTC", gmtime())</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(992, 196)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>timestamp_0</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>strftime("%Y-%m-%d_%H:%M:%SUTC", gmtime())</value>
+      <value>dt.strftime(dt.utcnow(), "%Y%m%d_%H%M%S.%f" )+'_UTC'</value>
     </param>
   </block>
   <block>
@@ -377,11 +458,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>file</key>
-      <value>/tmp2.dat</value>
+      <value>sarsat_fp</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -428,11 +509,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>file</key>
-      <value>tmp.dat</value>
+      <value>apt_fp</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -577,7 +658,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(984, 36)</value>
+      <value>(584, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -589,7 +670,7 @@
     </param>
     <param>
       <key>import</key>
-      <value>from time import gmtime, strftime</value>
+      <value>from datetime import datetime as dt; import string</value>
     </param>
   </block>
   <block>
@@ -2818,6 +2899,49 @@
     <param>
       <key>wintype</key>
       <value>firdes.WIN_BLACKMAN_hARRIS</value>
+    </param>
+  </block>
+  <block>
+    <key>parameter</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(808, 16)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>sat_name</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value></value>
+    </param>
+    <param>
+      <key>short_id</key>
+      <value>s</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>string</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>'NOAA15'</value>
     </param>
   </block>
   <block>
