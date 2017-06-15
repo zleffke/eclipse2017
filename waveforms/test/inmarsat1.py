@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Inmarsat1
-# Generated: Fri Jun  9 22:35:22 2017
+# Generated: Thu Jun 15 13:48:31 2017
 ##################################################
 
 if __name__ == '__main__':
@@ -17,6 +17,8 @@ if __name__ == '__main__':
             print "Warning: failed to XInitThreads()"
 
 from PyQt4 import Qt
+from datetime import datetime as dt; import string
+from gnuradio import blocks
 from gnuradio import eng_notation
 from gnuradio import gr
 from gnuradio import qtgui
@@ -32,7 +34,7 @@ from gnuradio import qtgui
 
 class inmarsat1(gr.top_block, Qt.QWidget):
 
-    def __init__(self):
+    def __init__(self, sat_name='4F3'):
         gr.top_block.__init__(self, "Inmarsat1")
         Qt.QWidget.__init__(self)
         self.setWindowTitle("Inmarsat1")
@@ -57,11 +59,19 @@ class inmarsat1(gr.top_block, Qt.QWidget):
         self.restoreGeometry(self.settings.value("geometry").toByteArray())
 
         ##################################################
+        # Parameters
+        ##################################################
+        self.sat_name = sat_name
+
+        ##################################################
         # Variables
         ##################################################
+        self.ts_str = ts_str = dt.strftime(dt.utcnow(), "%Y%m%d_%H%M%S.%f" )+'_UTC'
         self.samp_rate = samp_rate = 1000000
+        self.inmarsat_fn = inmarsat_fn = "{:s}_{:s}_{:s}k.fc32".format(sat_name, ts_str, str(int(samp_rate)/1000))
         self.rx_gain = rx_gain = 20
         self.rx_freq = rx_freq = 1540e6
+        self.inmarsat_fp = inmarsat_fp = "/mnt/usbhdd/{:s}".format(inmarsat_fn)
 
         ##################################################
         # Blocks
@@ -179,10 +189,13 @@ class inmarsat1(gr.top_block, Qt.QWidget):
         self.osmosdr_source_0.set_antenna('', 0)
         self.osmosdr_source_0.set_bandwidth(0, 0)
 
+        self.blocks_file_sink_1 = blocks.file_sink(gr.sizeof_gr_complex*1, inmarsat_fp, False)
+        self.blocks_file_sink_1.set_unbuffered(False)
 
         ##################################################
         # Connections
         ##################################################
+        self.connect((self.osmosdr_source_0, 0), (self.blocks_file_sink_1, 0))
         self.connect((self.osmosdr_source_0, 0), (self.qtgui_freq_sink_x_0, 0))
         self.connect((self.osmosdr_source_0, 0), (self.qtgui_waterfall_sink_x_0, 0))
 
@@ -190,6 +203,20 @@ class inmarsat1(gr.top_block, Qt.QWidget):
         self.settings = Qt.QSettings("GNU Radio", "inmarsat1")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
+
+    def get_sat_name(self):
+        return self.sat_name
+
+    def set_sat_name(self, sat_name):
+        self.sat_name = sat_name
+        self.set_inmarsat_fn("{:s}_{:s}_{:s}k.fc32".format(self.sat_name, self.ts_str, str(int(self.samp_rate)/1000)))
+
+    def get_ts_str(self):
+        return self.ts_str
+
+    def set_ts_str(self, ts_str):
+        self.ts_str = ts_str
+        self.set_inmarsat_fn("{:s}_{:s}_{:s}k.fc32".format(self.sat_name, self.ts_str, str(int(self.samp_rate)/1000)))
 
     def get_samp_rate(self):
         return self.samp_rate
@@ -200,6 +227,14 @@ class inmarsat1(gr.top_block, Qt.QWidget):
         self.qtgui_waterfall_sink_x_0.set_frequency_range(0, self.samp_rate)
         self.qtgui_freq_sink_x_0.set_frequency_range(0, self.samp_rate)
         self.osmosdr_source_0.set_sample_rate(self.samp_rate)
+        self.set_inmarsat_fn("{:s}_{:s}_{:s}k.fc32".format(self.sat_name, self.ts_str, str(int(self.samp_rate)/1000)))
+
+    def get_inmarsat_fn(self):
+        return self.inmarsat_fn
+
+    def set_inmarsat_fn(self, inmarsat_fn):
+        self.inmarsat_fn = inmarsat_fn
+        self.set_inmarsat_fp("/mnt/usbhdd/{:s}".format(self.inmarsat_fn))
 
     def get_rx_gain(self):
         return self.rx_gain
@@ -219,8 +254,25 @@ class inmarsat1(gr.top_block, Qt.QWidget):
         self.osmosdr_source_0.set_center_freq(self.rx_freq, 0)
         self.osmosdr_source_0.set_center_freq(self.rx_freq, 1)
 
+    def get_inmarsat_fp(self):
+        return self.inmarsat_fp
+
+    def set_inmarsat_fp(self, inmarsat_fp):
+        self.inmarsat_fp = inmarsat_fp
+        self.blocks_file_sink_1.open(self.inmarsat_fp)
+
+
+def argument_parser():
+    parser = OptionParser(usage="%prog: [options]", option_class=eng_option)
+    parser.add_option(
+        "-s", "--sat-name", dest="sat_name", type="string", default='4F3',
+        help="Set sat_name [default=%default]")
+    return parser
+
 
 def main(top_block_cls=inmarsat1, options=None):
+    if options is None:
+        options, _ = argument_parser().parse_args()
 
     from distutils.version import StrictVersion
     if StrictVersion(Qt.qVersion()) >= StrictVersion("4.5.0"):
@@ -228,7 +280,7 @@ def main(top_block_cls=inmarsat1, options=None):
         Qt.QApplication.setGraphicsSystem(style)
     qapp = Qt.QApplication(sys.argv)
 
-    tb = top_block_cls()
+    tb = top_block_cls(sat_name=options.sat_name)
     tb.start()
     tb.show()
 
